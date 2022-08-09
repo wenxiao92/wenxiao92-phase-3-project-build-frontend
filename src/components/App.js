@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button} from '@mui/material';
-import Header from "./Header";
+import ChooseActivity from "./ChooseActivity";
 import { formatTimeslot } from "../services/TimeslotFormat"
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>"Hello World"</h1>
-      <Header activities={formattedActivities}/>
+      <ChooseActivity activities={formattedActivities}/>
     </div>
   );
 }
