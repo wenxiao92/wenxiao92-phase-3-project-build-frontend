@@ -4,6 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import BookActivity from "./BookActivity";
 
 const TimeAvailability = ({activityDetail, propTimeslot}) => {
     const [chosenTimeslot, setChosenTimeslot] = useState("")
@@ -33,6 +34,8 @@ const TimeAvailability = ({activityDetail, propTimeslot}) => {
           </Select>
         </FormControl>
         </Box>
+        <br></br>
+        <BookActivity />
         </div>
     )
 
