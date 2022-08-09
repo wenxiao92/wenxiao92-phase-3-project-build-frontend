@@ -4,15 +4,20 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import TimeAvailability from "./TimeAvailability";
 
-const ChooseActivity = ({activities}) => {
+const ChooseActivity = ({activities, activityDetail}) => {
     const [chosenActivity, setChosenActivity] = useState("")
+    const [timeslot, setTimeSlot] = useState([])
 
     const handleChange = (event) => {
         setChosenActivity(event.target.value);
+        const activityTimeslot = activityDetail.find(element => element.activity_name === event.target.value).activity_timeslot.split(',')
+        setTimeSlot(activityTimeslot)
     };
 
     return(
+    <div>
         <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Activity</InputLabel>
@@ -26,11 +31,13 @@ const ChooseActivity = ({activities}) => {
             {activities.map((activity) => (
                 <MenuItem key={activity.id} value={activity}>
                 {activity}
-            </MenuItem>
+                </MenuItem>
             ))}
           </Select>
         </FormControl>
-      </Box>
+        </Box>
+        <TimeAvailability activityDetail={activityDetail} propTimeslot={timeslot}/>
+    </div>
     )
 }
 

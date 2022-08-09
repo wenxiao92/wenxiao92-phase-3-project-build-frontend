@@ -17,20 +17,18 @@ const App = () => {
     activity.activity_name
   )
 
-  console.log(activityNames)
-
-  // //use to format future activity (make sure to grab from /services path)
-  // const formattedActivities = activities.map((activity) => ({
-  //   // this won't persist on the server
-  //   ...activity,
-  //   timeslotArray: formatTimeslot(activity.activity_timeslot)
-  // }))
-  // //console.log(formattedActivities) //test to see if new timeslot attribute is added to activity
+  //use to format future activity (make sure to grab from /services path)
+  const formattedActivities = activities.map((activity) => ({
+    // this won't persist on the server
+    ...activity,
+    timeslotArray: formatTimeslot(activity.activity_timeslot)
+  }))
+  //console.log(formattedActivities) //test to see if new timeslot attribute is added to activity
 
   return (
     <div className="App">
       <h1>"Hello World"</h1>
-      <ChooseActivity activities={activityNames} activityDetail={activities}/>
+      <ChooseActivity activities={activityNames} activityDetail={formattedActivities}/>
     </div>
   );
 }
