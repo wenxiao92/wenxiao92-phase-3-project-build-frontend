@@ -6,16 +6,21 @@ import { formatTimeslot } from "../services/TimeslotFormat"
 const App = () => {
   
   const [activities, setActivities] = useState([])
+  const [chosenActivity, setChosenActivity] = useState("")
+  const [timeslot, setTimeSlot] = useState([])
+  const [bookings, setActivityBookings] = useState([])
+
+  const handleActivityDropdown = (event) => {
+    setChosenActivity(event.target.value);
+    const activityTimeslot = formattedActivities.find(element => element.activity_name === event.target.value).activity_timeslot.split(',')
+    setTimeSlot(activityTimeslot)
+  };
 
   useEffect(() => {
     fetch("http://localhost:9292/activities")
       .then((r) => r.json())
       .then((activities) => setActivities(activities));
   }, []);
-
-  const activityNames = activities.map((activity) => 
-    activity.activity_name
-  )
 
   //use to format future activity (make sure to grab from /services path)
   const formattedActivities = activities.map((activity) => ({
@@ -28,7 +33,7 @@ const App = () => {
   return (
     <div className="App">
       <h1>"Hello World"</h1>
-      <ChooseActivity activities={activityNames} activityDetail={formattedActivities}/>
+      <ChooseActivity activities={activities} chosenActivity={chosenActivity} activityDropdown={handleActivityDropdown} propTimeslot={timeslot}/>
     </div>
   );
 }

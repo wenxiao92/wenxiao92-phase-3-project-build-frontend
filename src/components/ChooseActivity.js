@@ -6,15 +6,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TimeAvailability from "./TimeAvailability";
 
-const ChooseActivity = ({activities, activityDetail}) => {
-    const [chosenActivity, setChosenActivity] = useState("")
-    const [timeslot, setTimeSlot] = useState([])
-
-    const handleChange = (event) => {
-        setChosenActivity(event.target.value);
-        const activityTimeslot = activityDetail.find(element => element.activity_name === event.target.value).activity_timeslot.split(',')
-        setTimeSlot(activityTimeslot)
-    };
+const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot}) => {
+    const activityNames = activities.map((activity) => 
+      activity.activity_name
+    )
 
     return(
     <div>
@@ -26,9 +21,9 @@ const ChooseActivity = ({activities, activityDetail}) => {
             id="demo-simple-select"
             value={chosenActivity}
             label="Activity"
-            onChange={handleChange}
+            onChange={activityDropdown}
           >
-            {activities.map((activity) => (
+            {activityNames.map((activity) => (
                 <MenuItem key={activity.id} value={activity}>
                 {activity}
                 </MenuItem>
@@ -36,7 +31,7 @@ const ChooseActivity = ({activities, activityDetail}) => {
           </Select>
         </FormControl>
         </Box>
-        <TimeAvailability activityDetail={activityDetail} propTimeslot={timeslot}/>
+        <TimeAvailability propTimeslot={propTimeslot}/>
     </div>
     )
 }
