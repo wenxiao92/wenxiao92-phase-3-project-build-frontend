@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TimeAvailability from "./TimeAvailability";
 
-const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot}) => {
+const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot, activityBookings}) => {
     const activityNames = activities.map((activity) => 
       activity.activity_name
     )
@@ -31,7 +31,7 @@ const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimes
           </Select>
         </FormControl>
         </Box>
-        <TimeAvailability propTimeslot={propTimeslot}/>
+        <TimeAvailability propTimeslot={propTimeslot} activityBookings={activityBookings}/>
     </div>
     )
 }
