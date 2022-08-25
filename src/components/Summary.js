@@ -1,12 +1,10 @@
-// import React from "react";
+import React from "react";
 
-// const Summary = () => {
-//     return ( 
-//       <div>
-//         <h1 align="center">Testing</h1>
-//       </div>
-//     )
-//   }
+const Summary = () => {
+    return(
+        <h1>"Current bookings"</h1>
+    )
+}
 
 
-// export default Summary
+export default Summary

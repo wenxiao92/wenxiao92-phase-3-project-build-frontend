@@ -7,6 +7,8 @@ import Select from '@mui/material/Select';
 import TimeAvailability from "./TimeAvailability";
 
 const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot, activityBookings}) => {
+    //console.log(propTimeslot, activityBookings) //test if array prop is flowing through
+
     const activityNames = activities.map((activity) => 
       activity.activity_name
     )
