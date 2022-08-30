@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ChooseActivity from "./ChooseActivity";
 import { formatTimeslot } from "../services/TimeslotFormat"
+import Summary from "./Summary";
 
 const App = () => {
   

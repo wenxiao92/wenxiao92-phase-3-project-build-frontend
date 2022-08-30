@@ -1,8 +1,11 @@
 import React from "react";
 
-const Summary = () => {
+const Summary = ({booking}) => {
+
+console.log(booking)
+
     return(
-        <h1>"Current bookings"</h1>
+        <h1>"Current Bookings"</h1>
     )
 }
 

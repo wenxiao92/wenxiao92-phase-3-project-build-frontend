@@ -23,20 +23,33 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       const bookingsBasedOnTimeslot = activityBookings.filter((booking) => {
         return booking.timeslot === event.target.value
       })
-
       setSelectedTimeslotBookings(bookingsBasedOnTimeslot)
-
     };
 
-    console.log(activityBookings, selectedTimeslotBookings)
+    // const displaySummaryBookings = selectedTimeslotBookings.map((booking) => (
+    //   <Summary
+    //     key={booking.id}
+    //     booking={booking}
+    //   />
+    // ))
+
+    const renderSummaryComponent = <Summary
+      booking={selectedTimeslotBookings}
+      />
+
+
+    //console.log(activityBookings, selectedTimeslotBookings)
     //will not persist in database
     // const bookedTravelerIds = activityBookings.filter((activity) => (
     //     activity.timeslot === chosenTimeslot
     // )).map(element => element.traveler_id)
 
-    // const activityTimeslots = [...new Set(activityBookings.map((booking) => {
-    //   return booking.timeslot
+    // const usedTravelers = [...new Set(selectedTimeslotBookings.map((booking) => {
+    //   return booking.traveler_id
     // }))]
+
+    // console.log(usedTravelers)
+    
 
     return(
         <div>
@@ -60,7 +73,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         </FormControl>
         </Box>
         <br></br>
-        <Summary/>
+        {selectedTimeslotBookings.length === 0 ? <h1>"No Current Booking"</h1> : renderSummaryComponent}
         <BookingForm />
         </div>
     )
