@@ -11,6 +11,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
     const [travelers, setTravelers] = useState([])
     const [selectedTimeslotBookings, setSelectedTimeslotBookings] = useState([])
+    const [bookedTravelers, setBookedTravelers] = useState([])
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -26,30 +27,21 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setSelectedTimeslotBookings(bookingsBasedOnTimeslot)
     };
 
-    // const displaySummaryBookings = selectedTimeslotBookings.map((booking) => (
-    //   <Summary
-    //     key={booking.id}
-    //     booking={booking}
-    //   />
-    // ))
+    //handles edit form to edit later
+    const handleBookedTravelers = (event) => {
+      console.log(event.target.value)
+      // const bookedTravelers = [...new Set(selectedTimeslotBookings.map((booking) => {
+      //   return booking.traveler_id
+      // }))]
+    }
+
+
 
     const renderSummaryComponent = <Summary
       booking={selectedTimeslotBookings}
+      allTravelers={travelers}
+      handleBookedTravelers={handleBookedTravelers}
       />
-
-
-    //console.log(activityBookings, selectedTimeslotBookings)
-    //will not persist in database
-    // const bookedTravelerIds = activityBookings.filter((activity) => (
-    //     activity.timeslot === chosenTimeslot
-    // )).map(element => element.traveler_id)
-
-    // const usedTravelers = [...new Set(selectedTimeslotBookings.map((booking) => {
-    //   return booking.traveler_id
-    // }))]
-
-    // console.log(usedTravelers)
-    
 
     return(
         <div>
@@ -73,7 +65,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         </FormControl>
         </Box>
         <br></br>
-        {selectedTimeslotBookings.length === 0 ? <h1>"No Current Booking"</h1> : renderSummaryComponent}
+        {selectedTimeslotBookings.length === 0 ? <h1>No Matching Bookings</h1> : renderSummaryComponent}
         <BookingForm />
         </div>
     )
