@@ -1,10 +1,31 @@
-import React, { useState, useEffect }  from "react";
+import React from "react";
+import { formatAvailability } from "../services/TimeslotFormat"
+import CreateBooking from "./CreateBooking";
 
+function BookingForm({allTravelers, unavailableTravelers}) {
 
-function BookingForm({selectedTravelers, allTravelers}) {
+    const findUnavailableTravelers = unavailableTravelers.map((booking) => {
+        return booking.traveler_id
+    })
+
+    const reformatTravelers = allTravelers.map((traveler) => ({
+        ...traveler,
+        availability: formatAvailability(traveler, findUnavailableTravelers)
+    }))
+
+    const displayNames = reformatTravelers.map((traveler) => (
+        <CreateBooking
+            key={traveler.id}
+            traveler={traveler}
+        />
+    ))
+
 
     return(
-        <h1>"Current bookings"</h1>
+        <p>
+            <h1>Available Participants:</h1>
+            {displayNames}
+        </p>
     )
 }
 
