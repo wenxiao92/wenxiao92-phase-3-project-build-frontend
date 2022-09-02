@@ -7,7 +7,8 @@ const Summary = ({booking, handleBookedTravelers}) => {
         return eachBooking.booking_name
       }))]
 
-    console.log(bookingNames)
+    // console.log(bookingNames)
+
     const bookingButton = bookingNames.map((eachBookingName) => (
         <SummaryForm
             key={eachBookingName.id}
