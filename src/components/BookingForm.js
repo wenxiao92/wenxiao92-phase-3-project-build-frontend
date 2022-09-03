@@ -1,8 +1,10 @@
-import React from "react";
-import { formatAvailability } from "../services/TimeslotFormat"
+import React, {useState} from "react";
+import { formatAvailability, proxyState } from "../services/TimeslotFormat"
 import CreateBooking from "./CreateBooking";
 
 function BookingForm({allTravelers, unavailableTravelers}) {
+
+    const [stateForSubmit, setStateForSubmit] = useState([])
 
     const findUnavailableTravelers = unavailableTravelers.map((booking) => {
         return booking.traveler_id
@@ -13,10 +15,17 @@ function BookingForm({allTravelers, unavailableTravelers}) {
         availability: formatAvailability(traveler, findUnavailableTravelers)
     }))
 
+    const handleAddTraveler = (e) => {
+        //proxyState(id, array, cb)
+        proxyState(e, stateForSubmit, setStateForSubmit)
+    }
+    console.log(stateForSubmit)
+
     const displayNames = reformatTravelers.map((traveler) => (
         <CreateBooking
             key={traveler.id}
             traveler={traveler}
+            handleAddTraveler={handleAddTraveler}
         />
     ))
 
