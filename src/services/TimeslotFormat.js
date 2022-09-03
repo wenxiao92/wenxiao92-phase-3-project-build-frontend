@@ -11,11 +11,10 @@ export function formatAvailability(traveler, array) {
     }
   }
 
-  export function bookingsSummary(booking) {
-    if(booking === null){
-      return 
+export function proxyState(id, array, cb) {
+    if(array.includes(id)) {
+      cb(array.filter((el) => el !== id))
     } else {
-      return booking
+      cb(array.concat(id));
     }
-  
-  }  
+}
