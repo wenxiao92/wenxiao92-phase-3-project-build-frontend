@@ -7,7 +7,7 @@ import CreateBooking from "./CreateBooking";
 function BookingForm({allTravelers, unavailableTravelers}) {
     const [stateForSubmit, setStateForSubmit] = useState([])
     const [bookingName, setBookingName] = useState("")
-    const [stateForBooking, setStateForBooking] = useState([])
+    //const [stateForBooking, setStateForBooking] = useState([])
     
     //variable to pull all traveler ID from array
     const findUnavailableTravelers = unavailableTravelers.map((booking) => {
@@ -18,6 +18,11 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     const findActivityId = [...new Set(unavailableTravelers.map((booking) => {
         return booking.activity_id
     }))]
+
+    //pulls activity ID
+    const findTimeSlot = [...new Set(unavailableTravelers.map((booking) => {
+        return booking.timeslot
+    }))]    
 
     //sets a proxy status to determine render available vs non available travelers
     const reformatTravelers = allTravelers.map((traveler) => ({
@@ -42,20 +47,20 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     ))
     
     //Set up JSON to post booking
-    const newBooking = {
-        booking_name: bookingName,
-        activity_id: findActivityId[0],
-        traveler_id: null
-    };
+    // const newBooking = {
+    //     booking_name: bookingName,
+    //     activity_id: findActivityId[0],
+    //     traveler_id: null
+    // };
     
-    const configObj = {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newBooking),
-    };
+    // const configObj = {
+    //     method: "POST",
+    //     headers: {
+    //         Accept: "application/json",
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(newBooking),
+    // };
     
     const handleCreateActivity = (e) => {
         e.preventDefault();
@@ -63,10 +68,23 @@ function BookingForm({allTravelers, unavailableTravelers}) {
         // let newBooking = stateForSubmit.map((el) => {
         //     return {booking_name: bookingName, traveler_id: parseInt(el), activity_id: findActivityId[0],}
         //     })
-
-        
-
-        console.log(stateForSubmit, newBooking)
+        for (let i=0; i<stateForSubmit.length; i++){
+            fetch("http://localhost:9292/bookings", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    booking_name: bookingName,
+                    activity_id: findActivityId[0],
+                    traveler_id: parseInt(stateForSubmit[i]),
+                    timeslot: findTimeSlot[0]
+                }),
+            })
+            .then((resp) => resp.json())
+            .then((booking) => console.log(booking))
+        }
     }
 
     return(
