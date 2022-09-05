@@ -35,10 +35,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       })
       setBookedTravelersId(travelerNameById)
     }
-    // const bookingNames = [...new Set(booking.map((eachBooking) => {
-    //   return eachBooking.booking_name
-    // }))]
-
 
     const renderSummaryComponent = <Summary
       booking={selectedTimeslotBookings}
