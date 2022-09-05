@@ -7,12 +7,18 @@ import CreateBooking from "./CreateBooking";
 function BookingForm({allTravelers, unavailableTravelers}) {
     const [stateForSubmit, setStateForSubmit] = useState([])
     const [bookingName, setBookingName] = useState("")
+    const [stateForBooking, setStateForBooking] = useState([])
     
     //variable to pull all traveler ID from array
     const findUnavailableTravelers = unavailableTravelers.map((booking) => {
         return booking.traveler_id
     })
     
+    //pulls activity ID
+    const findActivityId = [...new Set(unavailableTravelers.map((booking) => {
+        return booking.activity_id
+    }))]
+
     //sets a proxy status to determine render available vs non available travelers
     const reformatTravelers = allTravelers.map((traveler) => ({
         ...traveler,
@@ -25,6 +31,8 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     }
     //console.log(stateForSubmit) //see which traveler is selected
     
+
+
     const displayNames = reformatTravelers.map((traveler) => (
         <CreateBooking
             key={traveler.id}
@@ -33,28 +41,32 @@ function BookingForm({allTravelers, unavailableTravelers}) {
         />
     ))
     
-    // Set up JSON to post booking
-    // const newBooking = {
-    //     amount,
-    //     date,
-    //     donor,
-    //     organization_id: organization,
-    //     completed: false,
-    // };
+    //Set up JSON to post booking
+    const newBooking = {
+        booking_name: bookingName,
+        activity_id: findActivityId[0],
+        traveler_id: null
+    };
     
-    // const configObj = {
-    //     method: "POST",
-    //     headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(newOrg),
-    // };
+    const configObj = {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBooking),
+    };
     
     const handleCreateActivity = (e) => {
         e.preventDefault();
 
-        console.log(stateForSubmit, bookingName)
+        // let newBooking = stateForSubmit.map((el) => {
+        //     return {booking_name: bookingName, traveler_id: parseInt(el), activity_id: findActivityId[0],}
+        //     })
+
+        
+
+        console.log(stateForSubmit, newBooking)
     }
 
     return(
