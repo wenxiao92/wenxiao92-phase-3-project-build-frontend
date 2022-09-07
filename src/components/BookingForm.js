@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { formatAvailability, proxyState } from "../services/TimeslotFormat"
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import CreateBooking from "./CreateBooking";
 
@@ -19,7 +18,7 @@ function BookingForm({allTravelers, unavailableTravelers}) {
         return booking.activity_id
     }))]
 
-    //pulls activity ID
+    //pulls timeslot
     const findTimeSlot = [...new Set(unavailableTravelers.map((booking) => {
         return booking.timeslot
     }))]    
@@ -35,8 +34,6 @@ function BookingForm({allTravelers, unavailableTravelers}) {
         proxyState(e, stateForSubmit, setStateForSubmit)
     }
     //console.log(stateForSubmit) //see which traveler is selected
-    
-
 
     const displayNames = reformatTravelers.map((traveler) => (
         <CreateBooking
@@ -45,22 +42,6 @@ function BookingForm({allTravelers, unavailableTravelers}) {
             handleAddTraveler={handleAddTraveler}
         />
     ))
-    
-    //Set up JSON to post booking
-    // const newBooking = {
-    //     booking_name: bookingName,
-    //     activity_id: findActivityId[0],
-    //     traveler_id: null
-    // };
-    
-    // const configObj = {
-    //     method: "POST",
-    //     headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(newBooking),
-    // };
     
     const handleCreateActivity = (e) => {
         e.preventDefault();
