@@ -65,9 +65,6 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     const handleCreateActivity = (e) => {
         e.preventDefault();
 
-        // let newBooking = stateForSubmit.map((el) => {
-        //     return {booking_name: bookingName, traveler_id: parseInt(el), activity_id: findActivityId[0],}
-        //     })
         for (let i=0; i<stateForSubmit.length; i++){
             fetch("http://localhost:9292/bookings", {
                 method: "POST",
@@ -89,6 +86,7 @@ function BookingForm({allTravelers, unavailableTravelers}) {
 
     return(
         <form onSubmit={handleCreateActivity}>
+            <br></br>
             <TextField
                 required
                 id="outlined-required"
