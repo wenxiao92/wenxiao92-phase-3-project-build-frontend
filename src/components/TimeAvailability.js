@@ -5,14 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import BookingForm from "./BookingForm";
-import Summary from "./Summary";
+import EditBookingForm from "./EditBookingForm";
 import EditBookingComponent from "./EditBookingComponent";
 
 const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
     const [travelers, setTravelers] = useState([])
     const [selectedTimeslotBookings, setSelectedTimeslotBookings] = useState([])
-    const [bookedTravelersId, setBookedTravelersId] = useState([])
+    
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -29,21 +29,16 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     };
 
     //handles edit form to edit later
-    const handleBookedTravelers = (event) => {
-      const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
-        return selectedBooking.traveler_id
-      })
-      setBookedTravelersId(travelerNameById)
-    }
 
-    const renderSummaryComponent = <Summary
+
+    const renderSummaryComponent = <EditBookingForm
       booking={selectedTimeslotBookings}
-      handleBookedTravelers={handleBookedTravelers}
+      allTravelers={travelers} 
       />
 
-    const renderEditBookingComponent = <EditBookingComponent
-      bookedTravelerProp={bookedTravelersId}
-    />
+    // const renderEditBookingComponent = <EditBookingComponent
+    //   bookedTravelerProp={bookedTravelersId}
+    // />
 
     return(
         <div>
@@ -68,7 +63,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         </Box>
         <br></br>
         {selectedTimeslotBookings.length === 0 ? <h1>No Bookings</h1> : renderSummaryComponent}
-        {bookedTravelersId.length === 0 ? <h1>Participants:</h1> : renderEditBookingComponent}
+        {/* {bookedTravelersId.length === 0 ? <h1> {null} </h1> : renderEditBookingComponent} */}
         <BookingForm allTravelers={travelers} unavailableTravelers={selectedTimeslotBookings}/>
         </div>
     )

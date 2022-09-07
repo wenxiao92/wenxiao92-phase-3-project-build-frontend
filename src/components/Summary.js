@@ -1,29 +1,14 @@
 import React from "react";
-import SummaryForm from "./SummaryForm";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-const Summary = ({booking, handleBookedTravelers}) => {
+const Summary = ({bookingName, handleBookedTravelers}) => {
 
-    const bookingNames = [...new Set(booking.map((eachBooking) => {
-        return eachBooking.booking_name
-      }))]
-
-    // console.log(bookingNames)
-
-    const bookingButton = bookingNames.map((eachBookingName) => (
-        <SummaryForm
-            key={eachBookingName.id}
-            bookingName={eachBookingName}
-            handleBookedTravelers={handleBookedTravelers}
-        />
-    ))
-
-    return(
-    <div>
-        <h1>"Current Bookings:"</h1>
-        {bookingButton}
-    </div>
-    )
+    return (
+        <Stack spacing={2} direction="row">
+          <Button onClick={handleBookedTravelers} value={bookingName} variant="contained">{bookingName}</Button>
+        </Stack>
+      );
 }
-
 
 export default Summary
