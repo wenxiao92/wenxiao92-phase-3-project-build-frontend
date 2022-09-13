@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { formatAvailability, proxyState } from "../services/TimeslotFormat"
 import TextField from '@mui/material/TextField';
-import CreateBooking from "./CreateBooking";
+import SelectNames from "./SelectNames";
 
-function BookingForm({allTravelers, unavailableTravelers}) {
+function BookingForm({unavailableTravelers, reformatTravelers, renderComponent}) {
     const [stateForSubmit, setStateForSubmit] = useState([])
     const [bookingName, setBookingName] = useState("")
     //const [stateForBooking, setStateForBooking] = useState([])
@@ -24,10 +24,6 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     }))]    
 
     //sets a proxy status to determine render available vs non available travelers
-    const reformatTravelers = allTravelers.map((traveler) => ({
-        ...traveler,
-        availability: formatAvailability(traveler, findUnavailableTravelers)
-    }))
     
     //a proxy callback function used to determine whether the name is selected
     const handleAddTraveler = (e) => {
@@ -36,37 +32,16 @@ function BookingForm({allTravelers, unavailableTravelers}) {
     //console.log(stateForSubmit) //see which traveler is selected
 
     const displayNames = reformatTravelers.map((traveler) => (
-        <CreateBooking
+        <SelectNames
             key={traveler.id}
             traveler={traveler}
             handleAddTraveler={handleAddTraveler}
+            renderComponent={renderComponent}
         />
     ))
     
-    const handleCreateActivity = (e) => {
-        e.preventDefault();
-
-        for (let i=0; i<stateForSubmit.length; i++){
-            fetch("http://localhost:9292/bookings", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    booking_name: bookingName,
-                    activity_id: findActivityId[0],
-                    traveler_id: parseInt(stateForSubmit[i]),
-                    timeslot: findTimeSlot[0]
-                }),
-            })
-            .then((resp) => resp.json())
-            .then((booking) => console.log(booking))
-        }
-    }
-
     return(
-        <form onSubmit={handleCreateActivity}>
+        <form>
             <br></br>
             <TextField
                 required
@@ -85,3 +60,25 @@ function BookingForm({allTravelers, unavailableTravelers}) {
 }
 
 export default BookingForm;
+
+        // const handleCreateActivity = (e) => {
+        //     e.preventDefault();
+    
+        //     for (let i=0; i<stateForSubmit.length; i++){
+        //         fetch("http://localhost:9292/bookings", {
+        //             method: "POST",
+        //             headers: {
+        //                 Accept: "application/json",
+        //                 "Content-Type": "application/json",
+        //             },
+        //             body: JSON.stringify({
+        //                 booking_name: bookingName,
+        //                 activity_id: findActivityId[0],
+        //                 traveler_id: parseInt(stateForSubmit[i]),
+        //                 timeslot: findTimeSlot[0]
+        //             }),
+        //         })
+        //         .then((resp) => resp.json())
+        //         .then((booking) => console.log(booking))
+        //     }
+        // }

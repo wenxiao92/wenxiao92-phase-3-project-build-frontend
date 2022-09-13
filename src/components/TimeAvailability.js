@@ -14,9 +14,8 @@ const TimeAvailability = ({propTimeslot, activityBookings, allowCheckBox}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
     const [travelers, setTravelers] = useState([]) //all travelers
     const [selectedTimeslotBookings, setSelectedTimeslotBookings] = useState([]) //bookings of selected timeslot
-    const [bookedTravelersId, setBookedTravelersId] = useState([])
     const [enableCheckBox, setEnableCheckBox] = useState([])
-    const [enableInitialCheck, setEnableInitialCheck] = useState([])
+    const [enableAvailability, setEnableAvailability] = useState([])
     const [renderComponent, setRenderComponent] = useState(false)
     const [renderNames, setRenderNames] = useState(false)
 
@@ -49,36 +48,38 @@ const TimeAvailability = ({propTimeslot, activityBookings, allowCheckBox}) => {
       } else {
         setRenderNames(true)
       }
+
+      const findUnavailableTravelers = bookingsBasedOnTimeslot.map((booking) => {
+        return booking.traveler_id.split(",")
+      }).flat().map((id) => parseInt(id))
+      setEnableCheckBox(findUnavailableTravelers)
+      setEnableAvailability(findUnavailableTravelers)
     };
 
+    //Shows name when "No Booking (Click here to create)"" is clicked on
     const handleDisplayNames = () => {
       setRenderNames((toggle) => !toggle)
-
     }
 
     //handle when a booking is clicked
     const handleBookedTravelers = (event) => {
-      const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
+      const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
-      })
-      setBookedTravelersId(travelerNameById)
-      
-      // if(event.target.value.length > 0){
-      //   setRenderNames(true)
-      // }
+      }).flat().map((id) => parseInt(id))
+      setEnableCheckBox(travelerNameById)
     }
+
 
     //sets a proxy status to determine render available vs non available travelers
     const reformatTravelers = travelers.map((traveler) => ({
       ...traveler,
-      checkedStatus: formatAvailability(traveler, enableCheckBox),
+      checkedStatus: formatAvailability(traveler, enableAvailability),
       checkAvailability: formatAvailability(traveler, enableCheckBox)
     }))
-
-
-
-
     
+    console.log(enableCheckBox)
+    
+    //components set to a variable for conditional rendering
     const renderCreateBooking = <CreateBooking
       handleDisplayNames={handleDisplayNames}
     />
@@ -92,7 +93,7 @@ const TimeAvailability = ({propTimeslot, activityBookings, allowCheckBox}) => {
     const renderBookingForm = <BookingForm
       unavailableTravelers={selectedTimeslotBookings}
       reformatTravelers={reformatTravelers}
-      renderNames={renderNames}
+      renderComponent={renderComponent}
     />
 
     return(

@@ -3,11 +3,12 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-function SelectNames({traveler, handleAddTraveler, allowCheckBox}) {
+function SelectNames({traveler, handleAddTraveler, renderComponent}) {
 
     const {id, name, checkedStatus, checkAvailability} = traveler
 
-    const [checked, setChecked] = useState(checkedStatus);
+    //console.log(id, name, checkedStatus)
+    const [checked, setChecked] = useState(false);
 
 
     const handleCheckedState = (event) => {
@@ -25,7 +26,7 @@ function SelectNames({traveler, handleAddTraveler, allowCheckBox}) {
                 control={
                     <Checkbox
                         id={id.toString()}
-                        checked={checked}
+                        checked={renderComponent ? checked : checkedStatus}
                         onChange={handleCheckedState}
                     />
                 }
