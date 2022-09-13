@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Summary from "./Summary";
 
 
-const EditBookingForm = ({booking, allTravelers}) => {
+const EditBookingForm = ({booking, handleBookedTravelers, handleCreateBooking, selectedTimeslot}) => {
 
+    console.log(selectedTimeslot)
     const [bookedTravelersId, setBookedTravelersId] = useState([])
 
     const bookingNames = [...new Set(booking.map((eachBooking) => {
@@ -12,12 +13,14 @@ const EditBookingForm = ({booking, allTravelers}) => {
 
     // console.log(bookingNames)
 
-    const handleBookedTravelers = (event) => {
-        const travelerNameById = booking.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
-          return selectedBooking.traveler_id
-        })
-        setBookedTravelersId(travelerNameById)
-      }
+    // const handleBookedTravelers = (event) => {
+        // const travelerNameById = booking.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
+        //   return selectedBooking.traveler_id
+        // })
+        // setBookedTravelersId(travelerNameById)
+    //     console.log(event.target.value)
+
+    // }
 
     
 
@@ -32,8 +35,9 @@ const EditBookingForm = ({booking, allTravelers}) => {
 
     return(
     <div>
-        <h1>"Current Bookings:"</h1>
         {bookingButton}
+        {/* <h1>Current Bookings:</h1>
+        {bookingButton} */}
     </div>
     )
 }

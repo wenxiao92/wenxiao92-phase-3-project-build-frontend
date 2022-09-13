@@ -1,35 +1,16 @@
-import React, {useState} from "react";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import React from "react";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-function CreateBooking({traveler, handleAddTraveler}) {
+const CreateBooking = ({booking}) => {
 
-    const {id, name, availability} = traveler
-    const [checked, setChecked] = useState(false);
-
-    const handleCheckedState = (event) => {
-        setChecked((toggle) => !toggle)
-        handleAddTraveler(event.target.id)
-    }
-
-
+    console.log(booking)
 
     return (
-        <FormGroup>
-            <FormControlLabel
-                disabled={availability}
-                label={name}
-                control={
-                    <Checkbox
-                        id={id}
-                        checked={checked}
-                        onChange={handleCheckedState}
-                    />
-                }
-            />
-        </FormGroup>
-    );
+        <Stack spacing={2} direction="row">
+          <Button variant="contained"> No Bookings (Click to create) </Button>
+        </Stack>
+      );
 }
 
-export default CreateBooking;
+export default CreateBooking
