@@ -69,7 +69,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setEnableAvailability(findUnavailableTravelers)
       setEnableCheckBox(findUnavailableTravelers)
     };
-    console.log(activityID, bookingNameArray)
 
     //Shows name when "No Booking (Click here to create)"" is clicked on
     const handleDisplayNames = () => {
@@ -126,7 +125,10 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         }),
       })
       .then((resp) => resp.json())
-      .then((booking) => setSelectedTimeslotBookings(booking))
+      .then((booking) => {
+        const revisedNameArray = bookingNameArray.concat(booking.booking_name)
+        setBookingNameArray(revisedNameArray)
+      })
   }
 //---------------------------------------Handle Functions---------------------------------------------------  
   
@@ -147,6 +149,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       allTravelers={travelers}
       handleBookedTravelers={handleBookedTravelers}
     />
+    //console.log(bookingNameArray)
 
     const renderBookingForm = <BookingForm
       unavailableTravelers={selectedTimeslotBookings}
