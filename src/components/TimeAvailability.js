@@ -46,9 +46,12 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setActivityID(findActivityId)
 
       //set Booking name array to state due to error after posting
-      const bookingNames = [...new Set(activityBookings.map((eachBooking) => {
-        return eachBooking.booking_name
-      }))]
+      // const bookingNames = [...new Set(activityBookings.map((eachBooking) => {
+      //   return eachBooking.booking_name
+      // }))]
+      const bookingNames = [...new Set(activityBookings.filter((eachBooking) => {
+        return eachBooking.timeslot === event.target.value
+      }).map((booking) => {return booking.booking_name}))]
       setBookingNameArray(bookingNames)
 
       if(bookingsBasedOnTimeslot.length === 0){
@@ -74,10 +77,12 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const handleDisplayNames = () => {
       setRenderNames((toggle) => !toggle)
       setBookingName("")
+      setRenderComponent((toggle) => !toggle)
     }
 
     //handle when a booking is clicked
     const handleBookedTravelers = (event) => {
+      console.log(selectedTimeslotBookings, event.target.value)
       const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
@@ -111,6 +116,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
       setBookingName("")
 
+      //POST or PATCH
+      {editOrCreateButton ? (
       fetch("http://localhost:9292/bookings", {
         method: "POST",
         headers: {
@@ -126,14 +133,20 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       })
       .then((resp) => resp.json())
       .then((booking) => {
+        if(selectedTimeslotBookings.length === 0){
+          setSelectedTimeslotBookings([booking])
+        }
+
         const revisedNameArray = bookingNameArray.concat(booking.booking_name)
         setBookingNameArray(revisedNameArray)
 
         const revisedAvailability = booking.traveler_id.split(",").map((id) => parseInt(id))
         setEnableAvailability(enableAvailability.concat(revisedAvailability))
-      })
+      })) : (
+        console.log("test")
+      )}
   }
-//---------------------------------------Handle Functions---------------------------------------------------  
+//---------------------------------------Handle Functions END-----------------------------------------------  
   
     //sets a proxy status to determine render available vs non available travelers
     const reformatTravelers = travelers.map((traveler) => ({
@@ -152,7 +165,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       allTravelers={travelers}
       handleBookedTravelers={handleBookedTravelers}
     />
-    //console.log(bookingNameArray)
 
     const renderBookingForm = <BookingForm
       unavailableTravelers={selectedTimeslotBookings}
@@ -164,6 +176,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setBookingName={(e) => setBookingName(e.target.value)}
       handleAddTraveler={handleAddTraveler}
     />
+
+    console.log(enableCheckBox, enableAvailability)
 
     return(
         <div>
