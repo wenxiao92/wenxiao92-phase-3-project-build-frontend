@@ -11,10 +11,18 @@ export function formatAvailability(traveler, array) {
     }
   }
 
-export function proxyState(id, array, cb) {
-    if(array.includes(id)) {
-      cb(array.filter((el) => el !== id))
+export function formatCheckBox(traveler, array) {
+    if(array.includes(traveler.id)) {
+      return true;
     } else {
-      cb(array.concat(id));
+      return false;
+    }
+  }
+
+export function proxyState(id, array, cb) {
+    if(array.includes(parseInt(id))) {
+      cb(array.filter((el) => parseInt(el) !== parseInt(id)))
+    } else {
+      cb(array.concat(parseInt(id)));
     }
 }

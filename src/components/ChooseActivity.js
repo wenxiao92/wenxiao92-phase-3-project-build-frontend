@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import TimeAvailability from "./TimeAvailability";
 
-const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot, activityBookings}) => {
+const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimeslot, activityBookings, allowCheckBox}) => {
     //console.log(propTimeslot, activityBookings) //test if array prop is flowing through
 
     const activityNames = activities.map((activity) => 
@@ -33,7 +33,7 @@ const ChooseActivity = ({activities, chosenActivity, activityDropdown, propTimes
           </Select>
         </FormControl>
         </Box>
-        <TimeAvailability propTimeslot={propTimeslot} activityBookings={activityBookings}/>
+        <TimeAvailability propTimeslot={propTimeslot} activityBookings={activityBookings} allowCheckBox={allowCheckBox}/>
     </div>
     )
 }
