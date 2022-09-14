@@ -20,8 +20,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [editOrCreateButton, setEditOrCreateButton] = useState(true)
     const [bookingName, setBookingName] = useState("") //changes booking name of Edit or Create
     const [stateForSubmit, setStateForSubmit] = useState([]) //state to determine which traveler is selected
-    const [activityID, setActivityID] = useState([])
-    const [bookingNameArray, setBookingNameArray] = useState([])
+    const [activityID, setActivityID] = useState([]) //set state due to posting resets array to blank
+    const [bookingNameArray, setBookingNameArray] = useState([]) //set state due to posting resets array to blank
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -39,13 +39,13 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       })
       setSelectedTimeslotBookings(bookingsBasedOnTimeslot)
 
-     
       //set activity ID to state due to error after posting
       const findActivityId = [...new Set(activityBookings.map((booking) => {
         return booking.activity_id
       }))]
       setActivityID(findActivityId)
 
+      //set Booking name array to state due to error after posting
       const bookingNames = [...new Set(activityBookings.map((eachBooking) => {
         return eachBooking.booking_name
       }))]
@@ -128,6 +128,9 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       .then((booking) => {
         const revisedNameArray = bookingNameArray.concat(booking.booking_name)
         setBookingNameArray(revisedNameArray)
+
+        const revisedAvailability = booking.traveler_id.split(",").map((id) => parseInt(id))
+        setEnableAvailability(enableAvailability.concat(revisedAvailability))
       })
   }
 //---------------------------------------Handle Functions---------------------------------------------------  
