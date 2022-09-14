@@ -1,25 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Summary from "./Summary";
 
 
-const EditBookingForm = ({booking, handleBookedTravelers}) => {
+const EditBookingForm = ({bookingNameArray, handleBookedTravelers}) => {
 
-    const bookingNames = [...new Set(booking.map((eachBooking) => {
-        return eachBooking.booking_name
-      }))]
 
-    // console.log(bookingNames)
 
-    // const handleBookedTravelers = (event) => {
-        // const travelerNameById = booking.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
-        //   return selectedBooking.traveler_id
-        // })
-        // setBookedTravelersId(travelerNameById)
-    //     console.log(event.target.value)
-
-    // }
-
-    const bookingButton = bookingNames.map((eachBookingName) => (
+    const bookingButton = bookingNameArray.map((eachBookingName) => (
         <Summary
             key={eachBookingName.id}
             bookingName={eachBookingName}

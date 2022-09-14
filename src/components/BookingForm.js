@@ -3,33 +3,7 @@ import { formatAvailability, proxyState } from "../services/TimeslotFormat"
 import TextField from '@mui/material/TextField';
 import SelectNames from "./SelectNames";
 
-function BookingForm({unavailableTravelers, reformatTravelers, renderComponent}) {
-    const [stateForSubmit, setStateForSubmit] = useState([])
-    const [bookingName, setBookingName] = useState("")
-    //const [stateForBooking, setStateForBooking] = useState([])
-    
-    //variable to pull all traveler ID from array
-    const findUnavailableTravelers = unavailableTravelers.map((booking) => {
-        return booking.traveler_id
-    })
-    
-    //pulls activity ID
-    const findActivityId = [...new Set(unavailableTravelers.map((booking) => {
-        return booking.activity_id
-    }))]
-
-    //pulls timeslot
-    const findTimeSlot = [...new Set(unavailableTravelers.map((booking) => {
-        return booking.timeslot
-    }))]    
-
-    //sets a proxy status to determine render available vs non available travelers
-    
-    //a proxy callback function used to determine whether the name is selected
-    const handleAddTraveler = (e) => {
-        proxyState(e, stateForSubmit, setStateForSubmit)
-    }
-    //console.log(stateForSubmit) //see which traveler is selected
+function BookingForm({reformatTravelers, renderComponent, editOrCreateButton, bookingName, setBookingName, handleSubmit, handleAddTraveler}) {
 
     const displayNames = reformatTravelers.map((traveler) => (
         <SelectNames
@@ -41,7 +15,7 @@ function BookingForm({unavailableTravelers, reformatTravelers, renderComponent})
     ))
     
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <br></br>
             <TextField
                 required
@@ -49,10 +23,10 @@ function BookingForm({unavailableTravelers, reformatTravelers, renderComponent})
                 label="Required"
                 defaultValue="Enter Booking Name"
                 value={bookingName}
-                onChange={(e) => setBookingName(e.target.value)}
+                onChange={setBookingName}
             />
             <p>
-            <button type="submit">Create Activity</button></p>
+            <button type="submit">{editOrCreateButton ? "Create Activity" : "Confirm Edit" }</button></p>
             <h1>Available Participants:</h1>
             {displayNames}
         </form>
