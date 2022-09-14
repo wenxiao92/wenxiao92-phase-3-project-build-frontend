@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import { formatAvailability, proxyState } from "../services/TimeslotFormat"
+import React from "react";
 import TextField from '@mui/material/TextField';
 import SelectNames from "./SelectNames";
 
@@ -34,25 +33,3 @@ function BookingForm({reformatTravelers, renderComponent, editOrCreateButton, bo
 }
 
 export default BookingForm;
-
-        // const handleCreateActivity = (e) => {
-        //     e.preventDefault();
-    
-        //     for (let i=0; i<stateForSubmit.length; i++){
-        //         fetch("http://localhost:9292/bookings", {
-        //             method: "POST",
-        //             headers: {
-        //                 Accept: "application/json",
-        //                 "Content-Type": "application/json",
-        //             },
-        //             body: JSON.stringify({
-        //                 booking_name: bookingName,
-        //                 activity_id: findActivityId[0],
-        //                 traveler_id: parseInt(stateForSubmit[i]),
-        //                 timeslot: findTimeSlot[0]
-        //             }),
-        //         })
-        //         .then((resp) => resp.json())
-        //         .then((booking) => console.log(booking))
-        //     }
-        // }

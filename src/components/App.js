@@ -11,7 +11,6 @@ const App = () => {
   const [timeslot, setTimeSlot] = useState([])
   //when activity is selected via dropdown, set all bookings related to the activity
   const [activityBookings, setActivityBookings] = useState([])
-  const [allowCheckBox, setAllowCheckBox] = useState(false)
 
   useEffect(() => {
     fetch("http://localhost:9292/activities")
@@ -37,15 +36,12 @@ const App = () => {
     fetch(`http://localhost:9292/bookings/${activityId}`)
       .then((r) => r.json())
       .then((bookings) => setActivityBookings(bookings));
-
-    setAllowCheckBox((toggle) => !toggle)
-
   };
 
   return (
     <div className="App">
       <h1>"Hello World"</h1>
-      <ChooseActivity activities={activities} chosenActivity={chosenActivity} activityDropdown={handleActivityDropdown} propTimeslot={timeslot} activityBookings={activityBookings} allowCheckBox={allowCheckBox}/>
+      <ChooseActivity activities={activities} chosenActivity={chosenActivity} activityDropdown={handleActivityDropdown} propTimeslot={timeslot} activityBookings={activityBookings}/>
     </div>
   );
 }
