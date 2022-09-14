@@ -7,32 +7,49 @@ function SelectNames({traveler, handleAddTraveler, renderComponent}) {
 
     const {id, name, checkedStatus, checkAvailability} = traveler
 
-    //console.log(id, name, checkedStatus)
     const [checked, setChecked] = useState(false);
+    const [preChecked, setPreChecked] = useState(checkedStatus)
 
 
     const handleCheckedState = (event) => {
         setChecked((toggle) => !toggle)
+        setPreChecked((toggle) => !toggle)
         handleAddTraveler(event.target.id)
     }
 
-
-
     return (
-        <FormGroup>
-            <FormControlLabel
-                disabled={checkAvailability}
-                label={name}
-                control={
-                    <Checkbox
-                        id={id.toString()}
-                        checked={renderComponent ? checked : checkedStatus}
-                        onChange={handleCheckedState}
-                    />
-                }
-            />
-        </FormGroup>
+        <div>
+            <FormGroup>
+                <FormControlLabel
+                    disabled={checkAvailability}
+                    label={name}
+                        control={
+                            <Checkbox
+                                id={id.toString()}
+                                checked={renderComponent ? checked : checkedStatus} //resets if true
+                                onChange={handleCheckedState}
+                            />
+                        }
+                />
+            </FormGroup>
+        </div>
     );
 }
 
 export default SelectNames;
+
+// return (
+//     <FormGroup>
+//         <FormControlLabel
+//             disabled={checkAvailability}
+//             label={name}
+//             control={
+//                 <Checkbox
+//                     id={id.toString()}
+//                     checked={renderComponent ? checked : checkedStatus}
+//                     onChange={handleCheckedState}
+//                 />
+//             }
+//         />
+//     </FormGroup>
+// );

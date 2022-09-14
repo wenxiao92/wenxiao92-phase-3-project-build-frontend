@@ -82,7 +82,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
     //handle when a booking is clicked
     const handleBookedTravelers = (event) => {
-      console.log(selectedTimeslotBookings, event.target.value)
       const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
