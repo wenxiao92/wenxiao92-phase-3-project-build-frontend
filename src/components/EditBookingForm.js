@@ -1,14 +1,14 @@
-import React from "react";
+import React, {useId} from "react";
 import Summary from "./Summary";
 
 
 const EditBookingForm = ({bookingNameArray, handleBookedTravelers}) => {
 
-
+    const id = useId()
 
     const bookingButton = bookingNameArray.map((eachBookingName) => (
         <Summary
-            key={eachBookingName.id}
+            key={id}
             bookingName={eachBookingName}
             handleBookedTravelers={handleBookedTravelers}
         />
