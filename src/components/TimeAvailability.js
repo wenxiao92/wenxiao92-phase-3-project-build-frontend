@@ -13,8 +13,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
     const [travelers, setTravelers] = useState([]) //all travelers
     const [selectedTimeslotBookings, setSelectedTimeslotBookings] = useState([]) //bookings of selected timeslot
-    const [enableCheckBox, setEnableCheckBox] = useState([]) //changes array of traveler's chkbox status
-    const [enableAvailability, setEnableAvailability] = useState([])
     const [renderComponent, setRenderComponent] = useState(false)
     const [renderNames, setRenderNames] = useState(false)
     const [editOrCreateButton, setEditOrCreateButton] = useState(true)
@@ -22,7 +20,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [stateForSubmit, setStateForSubmit] = useState([]) //state to determine which traveler is selected
     const [activityID, setActivityID] = useState([]) //set state due to posting resets array to blank
     const [bookingNameArray, setBookingNameArray] = useState([]) //set state due to posting resets array to blank
-    const [objForChkBox, setObjForChkBox] = useState([])
+    const [objForChkBox, setObjForChkBox] = useState([]) //handles
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -58,14 +56,18 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         setRenderComponent(false)
       }
 
-      // if(bookingsBasedOnTimeslot.length === 0){
-      //   setRenderNames(false)
-      // } else {
-      //   setRenderNames(true)
-      // }
+      if(bookingsBasedOnTimeslot.length === 0){
+        setRenderNames(false)
+      } else {
+        setRenderNames(true)
+      }
 
-      setRenderNames((toggle) => !toggle)
-
+      if(bookingsBasedOnTimeslot.length === 0){
+        setEditOrCreateButton(false)
+      } else {
+        setEditOrCreateButton(true)
+      }
+      
       const findUnavailableTravelers = bookingsBasedOnTimeslot.map((booking) => {
         return booking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
@@ -77,11 +79,12 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setObjForChkBox(reformatTravelers)
     };
 
-    //Shows name when "No Booking (Click here to create)"" is clicked on
+    //Shows proper naming of buttons when button is clicked on
     const handleDisplayNames = () => {
       setRenderNames((toggle) => !toggle)
       setBookingName("")
       setRenderComponent((toggle) => !toggle)
+      setEditOrCreateButton((toggle) => !toggle)
     }
 
     //handle when a booking is clicked
@@ -100,18 +103,16 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         checkAvailability: formatAvailability(traveler, travelerNameById)
       }))
       setObjForChkBox(reformatTravelers)
-      console.log(findUnavailableTravelers, travelerNameById)
 
       setBookingName(event.target.value)
 
       if(event.target.value.length > 0){
-        setEditOrCreateButton(true)
-      } else {
         setEditOrCreateButton(false)
+      } else {
+        setEditOrCreateButton(true)
       }
 
-      setEditOrCreateButton((toggle) => !toggle)
-
+      //setEditOrCreateButton((toggle) => !toggle)
     }
 
     //callback function to determine which person is selected
@@ -164,6 +165,11 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
         const revisedAvailability = changeCheckBoxStatus(stateForSubmit, objForChkBox)
         setObjForChkBox(revisedAvailability)
+
+        if(renderComponent === false){
+          setEditOrCreateButton(true)
+        }
+
       })) : (
         console.log("test")
       )}
@@ -217,7 +223,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         {renderComponent ? renderCreateBooking : null}
         {selectedTimeslotBookings.length === 0 ? null : renderEditBookingFormComponent}
         {renderNames ? renderBookingForm : null}
-        {/* <BookingForm unavailableTravelers={selectedTimeslotBookings} reformatTravelers={reformatTravelers} allowCheckBox={allowCheckBox} renderNames={renderNames}/> */}
         </div>
     )
 
