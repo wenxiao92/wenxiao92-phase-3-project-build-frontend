@@ -4,15 +4,6 @@ import SelectNames from "./SelectNames";
 
 function BookingForm({reformatTravelers, renderComponent, editOrCreateButton, bookingName, setBookingName, handleSubmit, handleAddTraveler}) {
 
-    const displayNames = reformatTravelers.map((traveler) => (
-        <SelectNames
-            key={traveler.id}
-            traveler={traveler}
-            handleAddTraveler={handleAddTraveler}
-            renderComponent={renderComponent}
-        />
-    ))
-    
     return(
         <form onSubmit={handleSubmit}>
             <br></br>
@@ -27,7 +18,8 @@ function BookingForm({reformatTravelers, renderComponent, editOrCreateButton, bo
             <p>
             <button type="submit">{editOrCreateButton ? "Create Activity" : "Confirm Edit" }</button></p>
             <h1>Available Participants:</h1>
-            {displayNames}
+            <SelectNames handleAddTraveler={handleAddTraveler} reformatTravelers={reformatTravelers} renderComponent={renderComponent} />
+            {/* {displayNames} */}
         </form>
     )
 }

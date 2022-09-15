@@ -3,35 +3,32 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-function SelectNames({traveler, handleAddTraveler, renderComponent}) {
-
-    const {id, name, checkedStatus, checkAvailability} = traveler
-
-    const [checked, setChecked] = useState(false);
-    const [preChecked, setPreChecked] = useState(checkedStatus)
-
+function SelectNames({reformatTravelers, handleAddTraveler, renderComponent}) {
 
     const handleCheckedState = (event) => {
-        setChecked((toggle) => !toggle)
-        setPreChecked((toggle) => !toggle)
         handleAddTraveler(event.target.id)
     }
 
+    const displayNames = reformatTravelers.map((traveler) => (
+        <FormGroup>
+            <FormControlLabel
+                disabled={traveler.checkAvailability}
+                label={traveler.name}
+                control={
+                    <Checkbox
+                        id={traveler.id.toString()}
+                        checked={traveler.checkedStatus}
+                        onChange={handleCheckedState}
+                    />
+                }
+            />
+        </FormGroup>
+    ))
+
+
     return (
         <div>
-            <FormGroup>
-                <FormControlLabel
-                    disabled={checkAvailability}
-                    label={name}
-                        control={
-                            <Checkbox
-                                id={id.toString()}
-                                checked={renderComponent ? checked : checkedStatus} //resets if true
-                                onChange={handleCheckedState}
-                            />
-                        }
-                />
-            </FormGroup>
+            {displayNames}
         </div>
     );
 }
