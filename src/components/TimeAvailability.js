@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 import BookingForm from "./BookingForm";
 import CreateBooking from "./CreateBooking";
 import EditBookingForm from "./EditBookingForm";
-import { formatAvailability, proxyState} from "../services/TimeslotFormat"
+import { formatAvailability, proxyState, changeCheckBoxStatus} from "../services/TimeslotFormat"
 
 const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
@@ -46,10 +46,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       }))]
       setActivityID(findActivityId)
 
-      //set Booking name array to state due to error after posting
-      // const bookingNames = [...new Set(activityBookings.map((eachBooking) => {
-      //   return eachBooking.booking_name
-      // }))]
+      //returns booking names and put into Array after posting
       const bookingNames = [...new Set(activityBookings.filter((eachBooking) => {
         return eachBooking.timeslot === event.target.value
       }).map((booking) => {return booking.booking_name}))]
@@ -92,7 +89,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
-      //setEnableAvailability(travelerNameById)
 
       //sets new object
       const findUnavailableTravelers = selectedTimeslotBookings.map((booking) => {
@@ -104,6 +100,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         checkAvailability: formatAvailability(traveler, travelerNameById)
       }))
       setObjForChkBox(reformatTravelers)
+      console.log(findUnavailableTravelers, travelerNameById)
 
       setBookingName(event.target.value)
 
@@ -158,17 +155,20 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       .then((booking) => {
         if(selectedTimeslotBookings.length === 0){
           setSelectedTimeslotBookings([booking])
+        } else {
+          setSelectedTimeslotBookings(selectedTimeslotBookings.concat([booking]))
         }
 
         const revisedNameArray = bookingNameArray.concat(booking.booking_name)
         setBookingNameArray(revisedNameArray)
 
-        const revisedAvailability = booking.traveler_id.split(",").map((id) => parseInt(id))
-        setEnableAvailability(enableAvailability.concat(revisedAvailability))
+        const revisedAvailability = changeCheckBoxStatus(stateForSubmit, objForChkBox)
+        setObjForChkBox(revisedAvailability)
       })) : (
         console.log("test")
       )}
   }
+
 //---------------------------------------Handle Functions END-----------------------------------------------  
     //components set to a variable for conditional rendering
     const renderCreateBooking = <CreateBooking
