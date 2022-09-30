@@ -13,14 +13,15 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [selectedTimeslot, setSelectedTimeslot] = useState("")
     const [travelers, setTravelers] = useState([]) //all travelers
     const [selectedTimeslotBookings, setSelectedTimeslotBookings] = useState([]) //bookings of selected timeslot
-    const [renderComponent, setRenderComponent] = useState(false)
-    const [renderNames, setRenderNames] = useState(false)
+    const [renderComponent, setRenderComponent] = useState(false) //render component when condition is met
+    const [renderNames, setRenderNames] = useState(false) //render component when condition is met
     const [editOrCreateButton, setEditOrCreateButton] = useState(true)
     const [bookingName, setBookingName] = useState("") //changes booking name of Edit or Create
     const [stateForSubmit, setStateForSubmit] = useState([]) //state to determine which traveler is selected
     const [activityID, setActivityID] = useState([]) //set state due to posting resets array to blank
     const [bookingNameArray, setBookingNameArray] = useState([]) //set state due to posting resets array to blank
-    const [objForChkBox, setObjForChkBox] = useState([]) //handles
+    const [objForChkBox, setObjForChkBox] = useState([]) 
+    const [bookingSelected, setBookingSelected] = useState(0) //for delete and patch
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -92,6 +93,9 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
+
+      const selectedId = activityBookings.filter((booking) => {return booking.booking_name === event.target.value})[0].id
+      setBookingSelected(selectedId)
 
       //sets new object
       const findUnavailableTravelers = selectedTimeslotBookings.map((booking) => {
@@ -171,11 +175,12 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         }
 
       })) : (
-        console.log("test")
+        console.log(bookingSelected)
       )}
   }
 
-//---------------------------------------Handle Functions END-----------------------------------------------  
+//---------------------------------------Handle Functions END-----------------------------------------------
+
     //components set to a variable for conditional rendering
     const renderCreateBooking = <CreateBooking
       handleDisplayNames={handleDisplayNames}
