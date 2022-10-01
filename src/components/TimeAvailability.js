@@ -136,7 +136,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       changeTravelerChkBox[parseInt(e)-1] = {...changeTravelerChkBox[parseInt(e)-1], checkedStatus: !changeTravelerChkBox[parseInt(e)-1].checkedStatus}
       setObjForChkBox(changeTravelerChkBox)
     }
-    console.log(stateForSubmit) //see which traveler is selected
+    //console.log(stateForSubmit) //see which traveler is selected
 
     //form submission
     const handleSubmit = (e) => {
@@ -196,7 +196,20 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
           })
         })
           .then((resp) => resp.json())
-          .then((booking) => console.log(booking))
+          .then((booking) => {
+            const resetBookings = selectedTimeslotBookings.filter((eachBooking) => eachBooking.id !== bookingSelected).concat([booking])
+            setSelectedTimeslotBookings(resetBookings)
+
+            const findUnavailableTravelers = resetBookings.map((eachBooking) => {
+              return eachBooking.traveler_id.split(",")
+            }).flat().map((id) => parseInt(id))
+            const reformatTravelers = travelers.map((traveler) => ({
+              ...traveler,
+              checkedStatus: formatAvailability(traveler, findUnavailableTravelers),
+              checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
+            }))
+            setObjForChkBox(reformatTravelers)
+          })
       )}
   }
 
