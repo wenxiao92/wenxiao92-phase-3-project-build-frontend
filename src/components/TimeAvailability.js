@@ -22,6 +22,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [bookingNameArray, setBookingNameArray] = useState([]) //set state due to posting resets array to blank
     const [objForChkBox, setObjForChkBox] = useState([]) 
     const [bookingSelected, setBookingSelected] = useState(0) //for delete and patch
+    
 
     useEffect(() => {
         fetch("http://localhost:9292/travelers")
@@ -90,14 +91,12 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
     //handle when a booking is clicked
     const handleBookedTravelers = (event) => {
+            
+      //sets new object
       const travelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name !== event.target.value).map((selectedBooking) => {
         return selectedBooking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
 
-      const selectedId = activityBookings.filter((booking) => {return booking.booking_name === event.target.value})[0].id
-      setBookingSelected(selectedId)
-
-      //sets new object
       const findUnavailableTravelers = selectedTimeslotBookings.map((booking) => {
         return booking.traveler_id.split(",")
       }).flat().map((id) => parseInt(id))
@@ -107,6 +106,16 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         checkAvailability: formatAvailability(traveler, travelerNameById)
       }))
       setObjForChkBox(reformatTravelers)
+
+      //set initial travelers based on booking
+      const initialTravelerNameById = selectedTimeslotBookings.filter((booking) => booking.booking_name === event.target.value).map((selectedBooking) => {
+        return selectedBooking.traveler_id.split(",")
+      }).flat().map((id) => parseInt(id))
+      setStateForSubmit(initialTravelerNameById)
+      
+      //determine which booking to patch or delete
+      const selectedId = activityBookings.filter((booking) => {return booking.booking_name === event.target.value})[0].id
+      setBookingSelected(selectedId)
 
       setBookingName(event.target.value)
 
@@ -127,7 +136,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       changeTravelerChkBox[parseInt(e)-1] = {...changeTravelerChkBox[parseInt(e)-1], checkedStatus: !changeTravelerChkBox[parseInt(e)-1].checkedStatus}
       setObjForChkBox(changeTravelerChkBox)
     }
-    //console.log(stateForSubmit) //see which traveler is selected
+    console.log(stateForSubmit) //see which traveler is selected
 
     //form submission
     const handleSubmit = (e) => {
@@ -175,7 +184,19 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         }
 
       })) : (
-        console.log(bookingSelected)
+        //console.log(bookingSelected)
+        fetch(`http://localhost:9292/bookings/${bookingSelected}/edit`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+             booking_name: bookingName,
+             traveler_id: stateForSubmit.toString()
+          })
+        })
+          .then((resp) => resp.json())
+          .then((booking) => console.log(booking))
       )}
   }
 
