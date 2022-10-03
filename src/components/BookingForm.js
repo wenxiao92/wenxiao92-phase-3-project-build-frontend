@@ -17,7 +17,7 @@ function BookingForm({reformatTravelers, renderComponent, editOrCreateButton, bo
             />
             <p>
             <button type="submit">{editOrCreateButton ? "Create Activity" : "Confirm Edit" }</button>
-            {cancelButtonStatus? null : <button onClick={handleCancelButton} type="submit">Cancel Create Booking</button>} </p>
+            {cancelButtonStatus? null : <button onClick={handleCancelButton} type="submit">Cancel Creating</button>} </p>
             <h1>Available Participants:</h1>
             <SelectNames handleAddTraveler={handleAddTraveler} reformatTravelers={reformatTravelers} renderComponent={renderComponent} />
             {/* {displayNames} */}

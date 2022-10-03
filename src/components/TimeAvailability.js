@@ -122,6 +122,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
       if(event.target.value.length > 0){
         setEditOrCreateButton(false)
+        setCancelButton(false)
       } else {
         setEditOrCreateButton(true)
       }
