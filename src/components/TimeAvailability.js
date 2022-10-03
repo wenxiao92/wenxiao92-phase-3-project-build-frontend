@@ -16,6 +16,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [renderComponent, setRenderComponent] = useState(false) //render component when condition is met
     const [renderNames, setRenderNames] = useState(false) //render component when condition is met
     const [editOrCreateButton, setEditOrCreateButton] = useState(true)
+    const [cancelButton, setCancelButton] = useState(true)
     const [bookingName, setBookingName] = useState("") //changes booking name of Edit or Create
     const [stateForSubmit, setStateForSubmit] = useState([]) //state to determine which traveler is selected
     const [activityID, setActivityID] = useState([]) //set state due to posting resets array to blank
@@ -137,7 +138,9 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       setObjForChkBox(changeTravelerChkBox)
 
       //Hides bookings when creating a NEW booking
-      
+      if(editOrCreateButton === true){
+        setCancelButton(false)
+      }
 
     }
     //console.log(stateForSubmit) //see which traveler is selected
@@ -222,6 +225,24 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       )}
   }
 
+  const handleCancelButton = () => {
+    //makes button disappear
+    setCancelButton((toggle) => !toggle)
+
+    //resets checkboxes back
+    const findUnavailableTravelers = selectedTimeslotBookings.map((booking) => {
+      return booking.traveler_id.split(",")
+    }).flat().map((id) => parseInt(id))
+    const reformatTravelers = travelers.map((traveler) => ({
+      ...traveler,
+      checkedStatus: formatAvailability(traveler, findUnavailableTravelers),
+      checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
+    }))
+    setObjForChkBox(reformatTravelers)
+
+  }
+
+
 //---------------------------------------Handle Functions END-----------------------------------------------
 
     //components set to a variable for conditional rendering
@@ -233,6 +254,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       bookingNameArray={bookingNameArray} 
       allTravelers={travelers}
       handleBookedTravelers={handleBookedTravelers}
+      cancelButtonStatus={cancelButton}
     />
 
     const renderBookingForm = <BookingForm
@@ -244,6 +266,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       bookingName={bookingName}
       setBookingName={(e) => setBookingName(e.target.value)}
       handleAddTraveler={handleAddTraveler}
+      cancelButtonStatus={cancelButton}
+      handleCancelButton={handleCancelButton}
     />
 
     return(
