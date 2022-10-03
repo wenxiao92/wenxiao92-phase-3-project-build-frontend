@@ -135,6 +135,10 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       const changeTravelerChkBox = [...objForChkBox]
       changeTravelerChkBox[parseInt(e)-1] = {...changeTravelerChkBox[parseInt(e)-1], checkedStatus: !changeTravelerChkBox[parseInt(e)-1].checkedStatus}
       setObjForChkBox(changeTravelerChkBox)
+
+      //Hides bookings when creating a NEW booking
+      
+
     }
     //console.log(stateForSubmit) //see which traveler is selected
 
@@ -209,6 +213,11 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
               checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
             }))
             setObjForChkBox(reformatTravelers)
+
+            const selectedBookingName = selectedTimeslotBookings.filter((eachBooking) => eachBooking.id === bookingSelected)[0].booking_name
+            const revisedNameArray = bookingNameArray.filter((eachName) => eachName !== selectedBookingName).concat(booking.booking_name)
+            setBookingNameArray(revisedNameArray)
+
           })
       )}
   }
