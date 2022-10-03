@@ -241,6 +241,11 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     }))
     setObjForChkBox(reformatTravelers)
 
+    //reset button name to 'Create Activity'
+    setEditOrCreateButton(true)
+
+    //resets booking name
+    setBookingName("")
   }
 
 
