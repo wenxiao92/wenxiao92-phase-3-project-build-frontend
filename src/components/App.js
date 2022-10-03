@@ -40,7 +40,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>"Hello World"</h1>
+      <h1>Trip Booking Page</h1>
       <ChooseActivity activities={activities} chosenActivity={chosenActivity} activityDropdown={handleActivityDropdown} propTimeslot={timeslot} activityBookings={activityBookings}/>
     </div>
   );
