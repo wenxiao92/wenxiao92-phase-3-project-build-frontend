@@ -191,6 +191,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
           setEditOrCreateButton(true)
         }
 
+        setCancelButton(true)
+
       })) : (
         //console.log(bookingSelected)
         fetch(`http://localhost:9292/bookings/${bookingSelected}/edit`, {
