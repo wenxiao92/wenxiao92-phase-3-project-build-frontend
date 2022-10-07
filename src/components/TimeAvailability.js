@@ -263,6 +263,19 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     setBookingName("")
   }
 
+  const handleDelete = (e) => {
+    const bookingNumDelete = selectedTimeslotBookings.filter((eachBooking) => eachBooking.booking_name === e.target.value)[0].id
+
+    fetch(`http://localhost:9292/bookings/${bookingNumDelete}`, {
+      method: "DELETE",
+    });
+
+    const resetBookingNames = [...new Set(selectedTimeslotBookings.filter((eachBooking) => {
+      return eachBooking.booking_name !== e.target.value
+    }).map((booking) => {return booking.booking_name}))]
+    setBookingNameArray(resetBookingNames)
+
+  }
 
 //---------------------------------------Handle Functions END-----------------------------------------------
 
@@ -276,6 +289,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       allTravelers={travelers}
       handleBookedTravelers={handleBookedTravelers}
       cancelButtonStatus={cancelButton}
+      handleDelete={handleDelete}
     />
 
     const renderBookingForm = <BookingForm
