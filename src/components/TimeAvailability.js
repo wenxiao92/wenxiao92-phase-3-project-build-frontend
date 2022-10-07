@@ -178,7 +178,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         if(selectedTimeslotBookings.length === 0){
           setSelectedTimeslotBookings([booking])
         } else {
-          setSelectedTimeslotBookings(selectedTimeslotBookings.concat([booking]))
+          setSelectedTimeslotBookings(...selectedTimeslotBookings.concat([booking]))
         }
 
         const revisedNameArray = bookingNameArray.concat(booking.booking_name)
@@ -189,7 +189,19 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
         if(renderComponent === false){
           setEditOrCreateButton(true)
+          setCancelButton(true)
         }
+
+        const resetBookings = selectedTimeslotBookings.concat([booking])
+        const findUnavailableTravelers = resetBookings.map((eachBooking) => {
+          return eachBooking.traveler_id.split(",")
+        }).flat().map((id) => parseInt(id))
+        const reformatTravelers = travelers.map((traveler) => ({
+          ...traveler,
+          checkedStatus: formatAvailability(traveler, findUnavailableTravelers),
+          checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
+        }))
+        setObjForChkBox(reformatTravelers)
 
         setCancelButton(true)
 
@@ -224,6 +236,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
             const revisedNameArray = bookingNameArray.filter((eachName) => eachName !== selectedBookingName).concat(booking.booking_name)
             setBookingNameArray(revisedNameArray)
 
+            setCancelButton(true)
           })
       )}
   }
