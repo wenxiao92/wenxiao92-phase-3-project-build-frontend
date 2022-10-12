@@ -23,6 +23,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const [bookingNameArray, setBookingNameArray] = useState([]) //set state due to posting resets array to blank
     const [objForChkBox, setObjForChkBox] = useState([]) 
     const [bookingSelected, setBookingSelected] = useState(0) //for delete and patch
+    const [travelerName, setTravelerName] = useState("") //used to add new travelers
     
 
     useEffect(() => {
@@ -178,7 +179,8 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
         if(selectedTimeslotBookings.length === 0){
           setSelectedTimeslotBookings([booking])
         } else {
-          setSelectedTimeslotBookings(...selectedTimeslotBookings.concat([booking]))
+          const newTimeslotBookings = [...selectedTimeslotBookings]
+          setSelectedTimeslotBookings(newTimeslotBookings.concat([booking]))
         }
 
         const revisedNameArray = bookingNameArray.concat(booking.booking_name)
@@ -277,6 +279,39 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
 
   }
 
+  const handleAddName = (e) => {
+    e.preventDefault()
+
+    fetch("http://localhost:9292/travelers", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: travelerName
+      }),
+    })
+    .then((resp) => resp.json())
+    .then((traveler) => {
+
+      setTravelerName("")
+
+      const findUnavailableTravelers = selectedTimeslotBookings.map((booking) => {
+        return booking.traveler_id.split(",")
+      }).flat().map((id) => parseInt(id))
+      const newTravelerArray = travelers.concat(traveler)
+      const reformatTravelers = newTravelerArray.map((traveler) => ({
+        ...traveler,
+        checkedStatus: formatAvailability(traveler, findUnavailableTravelers),
+        checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
+      }))
+      setObjForChkBox(reformatTravelers)
+
+    })
+
+  }
+
 //---------------------------------------Handle Functions END-----------------------------------------------
 
     //components set to a variable for conditional rendering
@@ -295,7 +330,6 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     const renderBookingForm = <BookingForm
       unavailableTravelers={selectedTimeslotBookings}
       reformatTravelers={objForChkBox}
-      renderComponent={renderComponent}
       editOrCreateButton={editOrCreateButton}
       handleSubmit={handleSubmit}
       bookingName={bookingName}
@@ -303,6 +337,9 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       handleAddTraveler={handleAddTraveler}
       cancelButtonStatus={cancelButton}
       handleCancelButton={handleCancelButton}
+      travelerName={travelerName}
+      setTravelerName={(e) => setTravelerName(e.target.value)}
+      handleAddName={handleAddName}
     />
 
     return(
