@@ -118,7 +118,7 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
       //determine which booking to patch or delete
       const selectedId = activityBookings.filter((booking) => {return booking.booking_name === event.target.value})[0].id
       setBookingSelected(selectedId)
-
+      
       setBookingName(event.target.value)
 
       if(event.target.value.length > 0){
@@ -277,6 +277,20 @@ const TimeAvailability = ({propTimeslot, activityBookings}) => {
     }).map((booking) => {return booking.booking_name}))]
     setBookingNameArray(resetBookingNames)
 
+    const resetBookings = selectedTimeslotBookings.filter((eachBooking) => eachBooking.id !== bookingNumDelete)
+    setSelectedTimeslotBookings(resetBookings)
+
+    const findUnavailableTravelers = resetBookings.map((eachBooking) => {
+      return eachBooking.traveler_id.split(",")
+    }).flat().map((id) => parseInt(id))
+    const reformatTravelers = travelers.map((traveler) => ({
+      ...traveler,
+      checkedStatus: formatAvailability(traveler, findUnavailableTravelers),
+      checkAvailability: formatAvailability(traveler, findUnavailableTravelers)
+    }))
+    setObjForChkBox(reformatTravelers)
+
+    setStateForSubmit([])
   }
 
   const handleAddName = (e) => {
